@@ -11,9 +11,9 @@ REFACTOR: 전면 수정(코드 리펙토링)
 
 아래는 예시 입니다. 
 
-[FEAT] 회원 조회 API 구현 
-[CHORE] USER 테이블 컬럼 명 수정
-[FIX] createAt, updateAt 적용 안되던 오류 수정
+[FEAT] 회원 조회 API 구현 (#1)
+[CHORE] USER 테이블 컬럼 명 수정 (#2)
+[FIX] createAt, updateAt 적용 안되던 오류 수정 (#3)
 ```
 
 프로젝트 구조
