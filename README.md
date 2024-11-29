@@ -19,7 +19,7 @@ REFACTOR: 전면 수정(코드 리펙토링)
 프로젝트 구조
 ```Main
 ㄴconfig(프로젝트 관련 설정)
-ㄴ api(Controller, Service)
+ㄴ api(Controller, Service,dto)
 ㄴcommon(exception..)
 ㄴdomain(entity, repo)
 ㄴ external(외부 api 관련)
