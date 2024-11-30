@@ -1,19 +1,20 @@
 ---
 name: Feature Request
 about: Suggest an idea for this project
-title: ''
+title: "[feat]"
 labels: ''
 assignees: ''
 
 ---
 
-## 설명
-> 코드에 대한 설명
+## :page_facing_up:어떤 기능인가요?
 
-## 진행 상황
-- [ ] todo1
-- [ ] todo2
-- [ ] todo3
+> 추가하려는 기능에 대해 간결하게 설명해주세요
 
-## 부가 설명
-> 기타
+## :heavy_check_mark:작업 상세 내용
+
+- [ ] TODO
+- [ ] TODO
+- [ ] TODO
+
+## :bell:참고할만한 자료(선택)
