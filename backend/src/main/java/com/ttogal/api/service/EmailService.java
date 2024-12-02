@@ -1,6 +1,6 @@
 package com.ttogal.api.service;
 
-import com.ttogal.common.excpetion.EmailSendException;
+import com.ttogal.common.excpetion.email.EmailSendException;
 import com.ttogal.common.util.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -68,6 +68,12 @@ public class EmailService {
 
             MimeMessage message = createMail(sendEmail, number); // 메일 생성
             javaMailSender.send(message); // 메일 발송
+
+            // Redis에 인증 코드 저장
+            String key = redisUtil.generateKey(sendEmail);
+            redisUtil.setDataExpire(key, number, 300); // 5분 동안 유효
+            log.info("인증 코드 저장: Key={}, Code={}", key, number);
+
         } catch (MailException | MessagingException e) {
             throw new EmailSendException("메일 발송 중 오류가 발생했습니다.", e); // 사용자 정의 예외 던지기
         }
@@ -78,18 +84,23 @@ public class EmailService {
     //메일 검증
 
     // 코드 검증
-    public Boolean verifyEmailCode(String email, String code, long durationInSeconds) {
+    public Boolean verifyEmailCode(String email, String code) {
         String key = redisUtil.generateKey(email);
-        redisUtil.setDataExpire(key, code, durationInSeconds); // Redis에 저장
+        String storedCode = redisUtil.getData(key);
 
-        String codeFoundByEmail = redisUtil.getData(key);
-        log.info("이메일 코드 :  " + codeFoundByEmail);
-        if (codeFoundByEmail == null) {
+        log.info("Redis에서 조회된 코드: {}", storedCode);
+
+        if (storedCode == null) {
+            log.warn("Redis에 저장된 코드가 없습니다. Key={}", key);
             return false;
         }
-        boolean isVerified = codeFoundByEmail.equals(code);
+
+        boolean isVerified = storedCode.equals(code);
         if (isVerified) {
             redisUtil.deleteData(email); // 인증 성공 후 Redis에서 코드 삭제
+            log.info("인증 성공: Key={}, Code={}", key, code);
+        } else {
+            log.warn("인증 실패: Key={}, 입력된 Code={}, 저장된 Code={}", key, code, storedCode);
         }
         return isVerified;
     }

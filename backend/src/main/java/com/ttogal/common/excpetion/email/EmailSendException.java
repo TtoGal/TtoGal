@@ -1,4 +1,4 @@
-package com.ttogal.common.excpetion;
+package com.ttogal.common.excpetion.email;
 
 public class EmailSendException extends RuntimeException {
 

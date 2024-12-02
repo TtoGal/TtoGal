@@ -21,7 +21,7 @@ public class EmailController {
     // 인증코드 인증
     @PostMapping("/verify")
     public boolean verify(@RequestBody VerifyCodeRequest request) {
-        return emailService.verifyEmailCode(request.getEmail(), request.getAuthCode(), 300);
+        return emailService.verifyEmailCode(request.getEmail(), request.getAuthCode());
     }
 
 
