@@ -16,6 +16,7 @@ public class SecurityConfig {
   public BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
+
   @Bean
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http
@@ -26,7 +27,7 @@ public class SecurityConfig {
             .httpBasic((auth)->auth.disable());
     http
             .authorizeHttpRequests((auth)->auth
-                    .requestMatchers("/login","/","/register").permitAll()
+                    .requestMatchers("/login","/","/register", "/api/v1/email/**").permitAll()
                     .requestMatchers("/admin").hasRole("ADMIN")
                     .anyRequest().authenticated());
     http
