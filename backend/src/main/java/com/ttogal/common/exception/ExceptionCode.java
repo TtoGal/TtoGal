@@ -13,6 +13,9 @@ public enum ExceptionCode {
   DUPLICATED_USER_NICKNAME(400, "이미 존재하는 닉네임입니다."),
   INVALID_PASSWORD(400, "일치하지 않는 패스워드입니다.");
 
+  //Email Error
+
+
   private final int code;
   private final String message;
 }
