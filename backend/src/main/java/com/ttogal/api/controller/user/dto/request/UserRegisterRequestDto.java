@@ -31,10 +31,7 @@ public record UserRegisterRequestDto(
                 message = "영문 대소문자, 숫자, 특수문자 중 2가지 이상 조합/공백 불가")
         String password,
 
-        @NotNull(message = "비밀번호를 다시 한 번 입력해주세요")
-        String checkPassword,
-
-        @NotNull(message = "현재 상태를 입력해주세요.")
+        @NotNull(message = "현재 재직 상태를 입력해주세요.")
         JobStatus jobStatus,
 
         @NotNull(message = "생년월일을 yyyy-MM-dd 형식으로 입력해주세요.")
@@ -44,12 +41,12 @@ public record UserRegisterRequestDto(
         @NotNull(message = "성별을 선택해주세요.")
         Gender gender
 ) {
-  public User toEntity() {
+  public User toEntity(String password) {
     return User.builder()
             .name(this.name)
             .email(this.email)
             .nickname(this.nickname)
-            .password(this.password)
+            .password(password)
             .jobStatus(this.jobStatus)
             .birthDate(this.birthDate)
             .gender(this.gender)
