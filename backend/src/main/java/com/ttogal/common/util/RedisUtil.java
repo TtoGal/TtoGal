@@ -1,7 +1,7 @@
 package com.ttogal.common.util;
 
-import com.ttogal.common.excpetion.email.EmailNotFoundException;
-import com.ttogal.common.excpetion.email.KeyNotFoundException;
+import com.ttogal.common.exception.ExceptionCode;
+import com.ttogal.common.exception.email.EmailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -19,7 +19,7 @@ public class RedisUtil {
 
     public String generateKey(String email) {
         if (email == null || email.isEmpty()) {
-            throw new EmailNotFoundException("이메일이 존재하지 않습니다.");
+            throw new EmailException(ExceptionCode.NOT_FOUND_EMAIL);
         }
         return "email_verification:" + email;
     }
@@ -27,7 +27,7 @@ public class RedisUtil {
     public String getData(String key) {
         validateKey(key);
         if (!existData(key)) { // Key 존재 여부 확인
-            throw new KeyNotFoundException("Redis에 존재하지 않는 키입니다. key = " + key);
+            throw new EmailException(ExceptionCode.NOT_FOUND_KEY);
         }
         ValueOperations<String, String> valueOperations = template.opsForValue();
         return valueOperations.get(key);
@@ -52,7 +52,7 @@ public class RedisUtil {
 
     private void validateKey(String key) {
             if (key == null || key.isEmpty()) {
-                throw new KeyNotFoundException("키 값이 null이거나 비어 있습니다.");
+                throw new EmailException(ExceptionCode.NOT_FOUND_KEY);
             }
         }
 }
