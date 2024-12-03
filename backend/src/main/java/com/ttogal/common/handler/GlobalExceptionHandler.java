@@ -1,8 +1,8 @@
 package com.ttogal.common.handler;
 
-import com.ttogal.common.excpetion.email.EmailSendException;
+import com.ttogal.common.exception.ExceptionResponse;
+import com.ttogal.common.exception.TtogalException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EmailSendException.class)
-    public ResponseEntity<String> handleEmailSendException(EmailSendException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-    }
+  @ExceptionHandler(TtogalException.class)
+  public ResponseEntity<ExceptionResponse> handlerBadRequestException(TtogalException e) {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(Exception ex) {
-        log.error("An unexpected error occurred", ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
-    }
+    log.warn(e.getMessage(), e);
+
+    return ResponseEntity
+            .status(e.getExceptionCode().getCode())
+            .body(new ExceptionResponse(e.getExceptionCode().getCode(), e.getMessage()));
+  }
 }
+
