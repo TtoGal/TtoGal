@@ -41,5 +41,6 @@ public class UserController {
     userService.validateNickname(requestdto.nickname());
     UserResponseDto responseDto=UserResponseDto.builder().message("닉네임 검증이 완료되었습니다.").build();
     return new ResponseEntity<>(responseDto,HttpStatus.OK);
+
   }
 }
