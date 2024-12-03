@@ -5,6 +5,7 @@ import com.ttogal.api.controller.user.dto.request.ValidateEmailRequestDto;
 import com.ttogal.api.controller.user.dto.response.UserRegisterResponseDto;
 import com.ttogal.api.controller.user.dto.response.UserResponseDto;
 import com.ttogal.api.service.user.UserService;
+import com.ttogal.common.handler.user.UserResponseHandler;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/users")
 public class UserController {
   private final UserService userService;
+  private final UserResponseHandler userResponseHandler;
 
   @PostMapping("/register")
   public ResponseEntity<UserRegisterResponseDto> register(@RequestBody @Valid UserRegisterRequestDto dto) {
-    Long userId=userService.register(dto);
-    UserRegisterResponseDto responseDto=UserRegisterResponseDto.builder()
-            .userId(userId)
-            .message("회원가입이 성공적으로 완료되었습니다.")
-            .build();
+    Long userId = userService.register(dto);
+    UserRegisterResponseDto responseDto = userResponseHandler.createRegisterResponse(userId);
     return new ResponseEntity<>(responseDto,HttpStatus.OK);
   }
 
