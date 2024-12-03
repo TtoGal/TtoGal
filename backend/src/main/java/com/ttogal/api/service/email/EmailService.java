@@ -1,6 +1,7 @@
-package com.ttogal.api.service;
+package com.ttogal.api.service.email;
 
-import com.ttogal.common.excpetion.email.EmailSendException;
+import com.ttogal.common.exception.ExceptionCode;
+import com.ttogal.common.exception.email.EmailException;
 import com.ttogal.common.util.RedisUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -75,7 +76,7 @@ public class EmailService {
             log.info("인증 코드 저장: Key={}, Code={}", key, number);
 
         } catch (MailException | MessagingException e) {
-            throw new EmailSendException("메일 발송 중 오류가 발생했습니다.", e); // 사용자 정의 예외 던지기
+            throw new EmailException(ExceptionCode.EMAIL_SENDING_ERROR); // 사용자 정의 예외 던지기
         }
 
         return number; // 생성된 인증번호 반환
