@@ -47,3 +47,6 @@ gradle-wrapper.properties
 *.yaml
 *.yml
 *.sql
+
+# Ignore .env file
+.env
