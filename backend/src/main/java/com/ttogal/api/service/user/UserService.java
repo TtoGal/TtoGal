@@ -1,9 +1,6 @@
 package com.ttogal.api.service.user;
 
 import com.ttogal.api.controller.user.dto.request.UserRegisterRequestDto;
-import com.ttogal.api.controller.user.dto.request.ValidateEmailRequestDto;
-import com.ttogal.api.controller.user.dto.response.UserRegisterResponseDto;
-import com.ttogal.api.controller.user.dto.response.UserResponseDto;
 import com.ttogal.common.exception.ExceptionCode;
 import com.ttogal.common.exception.user.UserException;
 import com.ttogal.domain.user.entity.User;

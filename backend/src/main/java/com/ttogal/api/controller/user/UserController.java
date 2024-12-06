@@ -2,6 +2,7 @@ package com.ttogal.api.controller.user;
 
 import com.ttogal.api.controller.user.dto.request.UserRegisterRequestDto;
 import com.ttogal.api.controller.user.dto.request.ValidateEmailRequestDto;
+import com.ttogal.api.controller.user.dto.request.ValidateNicknameRequestDto;
 import com.ttogal.api.controller.user.dto.response.UserRegisterResponseDto;
 import com.ttogal.api.controller.user.dto.response.UserResponseDto;
 import com.ttogal.api.service.user.UserService;
@@ -15,32 +16,64 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
+@Tag(name = "User API", description = "사용자 관련 API")
 public class UserController {
+
   private final UserService userService;
   private final UserResponseHandler userResponseHandler;
 
   @PostMapping("/register")
-  public ResponseEntity<UserRegisterResponseDto> register(@RequestBody @Valid UserRegisterRequestDto dto) {
+  @Operation(
+          summary = "회원가입",
+          description = "새로운 사용자를 등록합니다.",
+          responses = {
+                  @ApiResponse(responseCode = "200",description = "회원가입 성공"),
+                  @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
+          }
+  )
+  public ResponseEntity<UserRegisterResponseDto> register(
+          @RequestBody @Valid UserRegisterRequestDto dto) {
     Long userId = userService.register(dto);
     UserRegisterResponseDto responseDto = userResponseHandler.createRegisterResponse(userId);
-    return new ResponseEntity<>(responseDto,HttpStatus.OK);
+    return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
 
   @PostMapping("/validate-email")
-  public ResponseEntity<UserResponseDto> validateEmail(@RequestBody @Valid ValidateEmailRequestDto requestdto) {
-    userService.validateEmail(requestdto.email());
-    UserResponseDto responseDto=UserResponseDto.builder().message("이메일 검증이 완료되었습니다.").build();
-    return new ResponseEntity<>(responseDto,HttpStatus.OK);
+  @Operation(
+          summary = "이메일 유효성 검증",
+          description = "사용자가 입력한 이메일의 유효성을 검증합니다.",
+          responses = {
+                  @ApiResponse(responseCode = "200",description = "이메일 검증 성공"),
+                  @ApiResponse(responseCode = "400",description = "잘못된 이메일 형식")
+          }
+  )
+  public ResponseEntity<UserResponseDto> validateEmail(
+          @RequestBody @Valid ValidateEmailRequestDto requestDto) {
+    userService.validateEmail(requestDto.email());
+    UserResponseDto responseDto = userResponseHandler.createUserResponse("이메일 검증이 완료되었습니다.");
+    return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
 
   @PostMapping("/validate-nickname")
-  public ResponseEntity<UserResponseDto> validateNickname(@RequestBody @Valid UserRegisterRequestDto requestdto) {
-    userService.validateNickname(requestdto.nickname());
-    UserResponseDto responseDto=UserResponseDto.builder().message("닉네임 검증이 완료되었습니다.").build();
-    return new ResponseEntity<>(responseDto,HttpStatus.OK);
-
+  @Operation(
+          summary = "닉네임 유효성 검증",
+          description = "사용자가 입력한 닉네임의 유효성을 검증합니다.",
+          responses = {
+                  @ApiResponse(responseCode = "200",description = "닉네임 검증 성공"),
+                  @ApiResponse(responseCode = "400",description = "잘못된 닉네임 형식")
+          }
+  )
+  public ResponseEntity<UserResponseDto> validateNickname(
+          @RequestBody @Valid ValidateNicknameRequestDto requestDto) {
+    userService.validateNickname(requestDto.nickname());
+    UserResponseDto responseDto = userResponseHandler.createUserResponse("사용가능한 닉네임입니다.");
+    return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
 }

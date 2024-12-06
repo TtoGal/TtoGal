@@ -23,14 +23,12 @@ public class EmailConfig {
     @Value("${mail.password}")
     private String password;
 
-    @Value("${mail.properties.mail.smtp.auth}")
-    private boolean auth;
 
-    @Value("${mail.properties.mail.smtp.starttls.enable}")
-    private boolean starttlsEnable;
+//    @Value("${mail.properties.mail.smtp.starttls.enable}")
+//    private boolean starttlsEnable;
 
-    @Value("${mail.properties.mail.smtp.starttls.required}")
-    private boolean starttlsRequired;
+//    @Value("${mail.properties.mail.smtp.starttls.required}")
+//    private boolean starttlsRequired;
 
     @Value("${mail.properties.mail.smtp.connectiontimeout}")
     private int connectionTimeout;
@@ -54,22 +52,18 @@ public class EmailConfig {
         mailSender.setJavaMailProperties(getMailProperties());
 
         Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
-
-        return mailSender;
+               return mailSender;
     }
 
     private Properties getMailProperties() {
         Properties properties = new Properties();
-        properties.put("mail.smtp.auth", auth);
-        properties.put("mail.smtp.starttls.enable", starttlsEnable);
-        properties.put("mail.smtp.starttls.required", starttlsRequired);
+        properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.ssl.enable", "true"); // SSL 활성화
         properties.put("mail.smtp.connectiontimeout", connectionTimeout);
         properties.put("mail.smtp.timeout", timeout);
         properties.put("mail.smtp.writetimeout", writeTimeout);
+        properties.put("mail.debug", "true");
 
         return properties;
     }

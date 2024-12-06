@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,31 +22,29 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain configure(HttpSecurity http) throws Exception {
     http
-            .csrf((auth)->auth.disable());
-    http
-            .formLogin((auth)->auth.disable());
-    http
-            .httpBasic((auth)->auth.disable());
-    http
-            .authorizeHttpRequests((auth)->auth
-                    .requestMatchers("/login","/","/register", "/api/v1/email/**").permitAll()
-                    .requestMatchers("/admin").hasRole("ADMIN")
-                    .anyRequest().authenticated());
-    http
-            .sessionManagement((session) -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+            .cors((AbstractHttpConfigurer::disable))
+            .csrf(CsrfConfigurer<HttpSecurity>::disable)
+            .formLogin(FormLoginConfigurer<HttpSecurity>::disable)
+            .httpBasic(HttpBasicConfigurer<HttpSecurity>::disable)
+            .headers(it -> it.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+            .sessionManagement(it ->
+                    it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authorizeHttpRequests(
+                    authorize -> authorize
+                            .requestMatchers("/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                            .requestMatchers("/static/**", "/templates/**").permitAll()
+                            .requestMatchers("/h2-console/**").permitAll()
+                            //user
+                            .requestMatchers("/login","/api/v1/users/register").permitAll()
+                            .requestMatchers("/api/v1/users").authenticated()
+                            //email
+                            .requestMatchers( "/api/v1/email/**").permitAll()
+                            //admin
+                            .requestMatchers("/admin").hasRole("ADMIN")
+                            .anyRequest().permitAll()
+            );
     return http.build();
   }
 
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-    return web -> web.ignoring().requestMatchers("/v3/api-docs/**",         // OpenAPI 문서 경로
-            "/swagger-ui/**",          // Swagger UI 경로
-            "/swagger-ui/index.html",  // Swagger UI 인덱스
-            "/webjars/**",
-            "/index.html",
-            "/h2-console/**"
-    );// Swagger UI에 필요한 웹 자원와 어플리케이션 정적 리소스)
-  }
 }
