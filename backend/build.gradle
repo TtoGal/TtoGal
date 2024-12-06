@@ -24,26 +24,41 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot Starter Dependencies
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    // JSON Web Token (JWT) Dependencies
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    // Lombok Dependencies
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Database Dependencies
+    runtimeOnly 'com.h2database:h2'
+
+    // Swagger Dependency
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+    // Redis Dependency
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    //Spring-Dotenv
+    implementation 'me.paulschwarz:spring-dotenv:2.5.4'
+
+
+    // Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    //redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis' // Spring Data Redis
-
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()
