@@ -38,9 +38,7 @@ nbdist/
 .gradle
 **/build/
 src/**/build/
-gradlew
-gradlew.bat
-gradle-wrapper.properties
+
 
 ### resources
 /src/main/generated/
