@@ -1,5 +1,6 @@
 package com.ttogal.api.controller.user;
 
+import com.ttogal.api.controller.user.dto.request.LoginRequestDto;
 import com.ttogal.api.controller.user.dto.request.UserRegisterRequestDto;
 import com.ttogal.api.controller.user.dto.request.ValidateEmailRequestDto;
 import com.ttogal.api.controller.user.dto.request.ValidateNicknameRequestDto;
@@ -28,6 +29,19 @@ public class UserController {
 
   private final UserService userService;
   private final UserResponseHandler userResponseHandler;
+
+  @PostMapping("/login")
+  @Operation(
+          summary = "로그인",
+          description = "이메일과 비밀번호로 사용자를 인증합니다.",
+          responses = {
+                  @ApiResponse(responseCode = "200",description = "로그인 성공"),
+                  @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터")
+          }
+  )
+  public void login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
+  }
+
 
   @PostMapping("/register")
   @Operation(
