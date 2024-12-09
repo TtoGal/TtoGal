@@ -43,7 +43,6 @@ dependencies {
     // Database Dependencies
     runtimeOnly 'com.h2database:h2' //개발 환경
     runtimeOnly 'com.mysql:mysql-connector-j'
-    implementation 'mysql:mysql-connector-java:8.0.27' // 적절한 버전으로 수정
 
 
 
