@@ -17,6 +17,8 @@ out/
 *.zip
 *.tar.gz
 *.rar
+!gradle-wrapper.jar
+
 
 ### macOS ###
 # General
