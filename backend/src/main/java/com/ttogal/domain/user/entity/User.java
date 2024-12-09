@@ -2,6 +2,7 @@ package com.ttogal.domain.user.entity;
 
 import com.ttogal.domain.user.entity.constant.Gender;
 import com.ttogal.domain.user.entity.constant.JobStatus;
+import com.ttogal.domain.user.entity.constant.Role;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -43,8 +44,12 @@ public class User {
   @Column(nullable=false)
   private Gender gender;
 
+  @Enumerated(EnumType.STRING)
+  @Column(nullable=false)
+  private Role role;
+
   @Builder
-  public User(String name,String email, String nickname, String password, JobStatus jobStatus, LocalDate birthDate, Gender gender) {
+  public User(String name,String email, String nickname, String password, JobStatus jobStatus, LocalDate birthDate, Gender gender,Role role) {
     this.name = name;
     this.email = email;
     this.nickname = nickname;
@@ -52,5 +57,6 @@ public class User {
     this.jobStatus = jobStatus;
     this.birthDate = birthDate;
     this.gender = gender;
+    this.role=role;
   }
 }
