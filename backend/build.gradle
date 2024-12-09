@@ -43,6 +43,8 @@ dependencies {
     // Database Dependencies
     runtimeOnly 'com.h2database:h2' //개발 환경
     runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'mysql:mysql-connector-java:8.0.27' // 적절한 버전으로 수정
+
 
 
     // Swagger Dependency
@@ -59,6 +61,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.h2database:h2' // 테스트용 내장 데이터베이스
+
 }
 
 
