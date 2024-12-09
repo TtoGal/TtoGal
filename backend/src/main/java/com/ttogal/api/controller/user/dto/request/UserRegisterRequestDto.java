@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.ttogal.domain.user.entity.User;
 import com.ttogal.domain.user.entity.constant.Gender;
 import com.ttogal.domain.user.entity.constant.JobStatus;
+import com.ttogal.domain.user.entity.constant.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -58,6 +59,7 @@ public record UserRegisterRequestDto(
             .jobStatus(this.jobStatus)
             .birthDate(this.birthDate)
             .gender(this.gender)
+            .role(Role.USER)
             .build();
   }
 }
