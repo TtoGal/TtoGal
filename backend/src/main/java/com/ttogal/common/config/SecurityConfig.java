@@ -2,7 +2,9 @@ package com.ttogal.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttogal.api.service.user.CustomUserDetailsService;
+import com.ttogal.common.filter.JwtFilter;
 import com.ttogal.common.filter.LoginFilter;
+import com.ttogal.common.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,7 @@ public class SecurityConfig {
 
   private final CustomUserDetailsService customUserDetailsService;
   private final ObjectMapper objectMapper;
+  private final JwtUtil jwtUtil;
 
   @Bean
   public BCryptPasswordEncoder passwordEncoder() {
@@ -47,14 +50,15 @@ public class SecurityConfig {
                             .requestMatchers("/static/**", "/templates/**").permitAll()
                             .requestMatchers("/h2-console/**").permitAll()
                             //user
-                            .requestMatchers("/login", "/api/v1/users/register").permitAll()
-                            .requestMatchers("/api/v1/users").authenticated()
+                            .requestMatchers("/api/v1/users/login", "/api/v1/users/register","api/v1/users/validate-nickname","api/v1/users/validate-email").permitAll()
+                            .requestMatchers("/api/v1/users/**").authenticated()
                             //email
                             .requestMatchers("/api/v1/email/**").permitAll()
                             //admin
                             .requestMatchers("/admin").hasRole("ADMIN")
                             .anyRequest().permitAll()
             )
+            .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
             .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
@@ -72,7 +76,7 @@ public class SecurityConfig {
   @Bean
   LoginFilter loginAuthenticationFilter() {
     LoginFilter loginFilter
-            = new LoginFilter(objectMapper);
+            = new LoginFilter(objectMapper,jwtUtil);
     loginFilter.setAuthenticationManager(authenticationManager());
     return loginFilter;
   }

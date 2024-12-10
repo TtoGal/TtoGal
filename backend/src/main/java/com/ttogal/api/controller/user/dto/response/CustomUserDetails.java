@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
         return user.getRole().toString();
       }
     });
-    return List.of();
+    return collection;
   }
 
   @Override
