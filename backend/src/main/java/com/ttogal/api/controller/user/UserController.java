@@ -12,14 +12,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -89,5 +88,11 @@ public class UserController {
     userService.validateNickname(requestDto.nickname());
     UserResponseDto responseDto = userResponseHandler.createUserResponse("사용가능한 닉네임입니다.");
     return new ResponseEntity<>(responseDto, HttpStatus.OK);
+  }
+
+  @GetMapping("/{userId}")
+  public ResponseEntity<Void> getUser(@PathVariable("userId") Long userId){
+    System.out.println("userId: " + userId);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
