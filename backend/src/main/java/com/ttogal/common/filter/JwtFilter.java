@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
   User user=User.builder().email(username)
           .password(tempPassword)
-          .role(Role.getRole(role))
+          .role(Role.valueOf(role.toUpperCase()))
           .build();
 
     CustomUserDetails customUserDetails = new CustomUserDetails(user);
