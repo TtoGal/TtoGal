@@ -52,9 +52,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     String role = extractRole(authentication);
 
     String accessToken = jwtUtil.createAccessToken(username, role);
-    String refrestToken = jwtUtil.createRefreshToken(username, role);
+    String refreshToken = jwtUtil.createRefreshToken(username, role);
 
-    jwtUtil.sendAccessAndRefreshToken(response, accessToken, refrestToken);
+    jwtUtil.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 
     log.info("로그인 성공: {}", username);
     log.info("Access & refresh 토큰 생성");
