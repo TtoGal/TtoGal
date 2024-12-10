@@ -1,6 +1,7 @@
 package com.ttogal.common.util;
 
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,15 +35,23 @@ public class JwtUtil {
   }
 
   public String getUsername(String token){
-    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+    return getPayload(token).get("username", String.class);
   }
 
   public String getRole(String token){
-    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+    return getPayload(token).get("role", String.class);
   }
 
   public Boolean isTokenExpired(String token){
-    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+    return getPayload(token).getExpiration().before(new Date());
+  }
+
+  private Claims getPayload(String token) {
+    return Jwts.parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
   }
 
   public String createAccessToken(String username, String role) {
